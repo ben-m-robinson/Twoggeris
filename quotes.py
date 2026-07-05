@@ -10,13 +10,11 @@ quotes = [
 
 user_quotes = {
     132973467212578816: [ # Moo
-        "Moo thinks the grass is greener on the other side.",
-        "Moo has been summoned."
+        "Imagine not even being able to solo heal FRU, pathetic!"
     ],
 
     400291092270022666: [ # Nev
-        "Nev detected. Initiating nonsense protocol.",
-        "Nev has entered the chat."
+        "Rapidly approaching your location with a loaded shotgun",
     ],
 
     117765165138575365: [ # Auggeris
@@ -25,7 +23,7 @@ user_quotes = {
     ],
 
     221997493104279552: [ # Baqu
-        "Baqu moment."
+        ""
     ],
 
     423948915373768734: [ # Sira

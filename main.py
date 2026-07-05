@@ -4,7 +4,10 @@ import logging
 from dotenv import load_dotenv
 import os
 import random
+import asyncio
+import re
 from quotes import quotes, user_quotes
+from datetime import timedelta
 
 load_dotenv()
 token = os.getenv("DISCORD_TOKEN")
@@ -26,9 +29,18 @@ user_IDs = {
     "Kumi": 364496506054508544
 }
 
+TRIGGERS = {
+    "piss",
+    "feet",
+    "cuck"
+}
+
+TRIGGER_RESPONSE = "Right thats it im getting the hose out"
 @bot.event
 async def on_ready():
     print(f"I am here to spread evil, {bot.user.name}")
+    if not hasattr(bot, "bg_task"):
+        bot.bg_task = asyncio.create_task(random_messages())
 
 
 @bot.event
@@ -39,12 +51,91 @@ async def on_message(message):
     if bot.user in message.mentions:
         possible_quotes = quotes.copy()
 
-        # Add user-specific quotes if they exist
         if message.author.id in user_quotes:
             possible_quotes.extend(user_quotes[message.author.id])
 
         await message.channel.send(random.choice(possible_quotes))
 
+    words = re.findall(r"\b\w+\b", message.content.lower())
+
+    if any(word in TRIGGERS for word in words):
+        await message.channel.send(
+            f"{message.author.mention} {TRIGGER_RESPONSE}"
+        )
+        try:
+            await message.author.timeout(
+                timedelta(minutes=10),
+                reason="Triggered word filter"
+            )
+        except discord.Forbidden:
+         await message.channel.send("Missing permissions to timeout users.")
+
+
     await bot.process_commands(message)
+
+async def random_messages():
+    await bot.wait_until_ready()
+
+    channel = bot.get_channel(1523247225948606474)
+
+    while not bot.is_closed():
+        wait_time = random.randint(3600, 36000)
+        await asyncio.sleep(wait_time)
+
+        await channel.send("awa")
+
+@bot.command()
+async def deathroll(ctx, target: discord.Member = None, start: int = 1000):
+
+    # If first argument is a number only (no target), shift logic
+    if isinstance(target, int):
+        start = target
+        target = None
+
+    max_value = start
+
+    # BOT MODE
+    if target is None:
+        player_turn = True  # user starts
+
+        await ctx.send(f"💀 You vs Twoggeris deathroll starting at **{start}**")
+
+        while True:
+            roll = random.randint(1, max_value)
+
+            if player_turn:
+                await ctx.send(f"{ctx.author.mention} rolled **{roll}** (1-{max_value})")
+            else:
+                await ctx.send(f"🤖 Twoggeris rolled **{roll}** (1-{max_value})")
+
+            if roll == 1:
+                loser = ctx.author if player_turn else "🤖 Bot"
+                await ctx.send(f"{loser} loses 💀")
+                break
+
+            max_value = roll
+            player_turn = not player_turn
+
+    # PVP MODE
+    else:
+        players = [ctx.author, target]
+        turn = 0
+
+        await ctx.send(
+            f"💀 Deathroll started: {ctx.author.mention} vs {target.mention} at **{start}**"
+        )
+
+        while True:
+            current_player = players[turn]
+            roll = random.randint(1, max_value)
+
+            await ctx.send(f"{current_player.mention} rolled **{roll}** (1-{max_value})")
+
+            if roll == 1:
+                await ctx.send(f"{current_player.mention} loses 💀")
+                break
+
+            max_value = roll
+            turn = 1 - turn
 
 bot.run(token, log_handler=handler, log_level=logging.DEBUG)
