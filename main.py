@@ -60,20 +60,20 @@ async def on_message(message):
 
         await message.channel.send(random.choice(possible_quotes))
 
-    words = re.findall(r"\b\w+\b", message.content.lower())
+    content = message.content.lower()
 
-    if any(word in TRIGGERS for word in words):
+    if any(trigger in content for trigger in TRIGGERS):
         await message.channel.send(
             f"{message.author.mention} {TRIGGER_RESPONSE}"
         )
+
         try:
             await message.author.timeout(
                 timedelta(minutes=2),
                 reason="Triggered word filter"
             )
-        except discord.Forbidden:
-         await message.channel.send("Missing permissions to timeout users.")
-
+        except (discord.Forbidden, discord.HTTPException):
+            await message.channel.send("Missing permissions to timeout users.")
 
     await bot.process_commands(message)
 
