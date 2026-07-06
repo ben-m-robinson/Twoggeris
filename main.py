@@ -32,7 +32,11 @@ user_IDs = {
 TRIGGERS = {
     "piss",
     "feet",
-    "cuck"
+    "cuck",
+    "6/7",
+    "six seven",
+    "pee",
+    "urine"
 }
 
 TRIGGER_RESPONSE = "Right thats it im getting the hose out"
@@ -64,7 +68,7 @@ async def on_message(message):
         )
         try:
             await message.author.timeout(
-                timedelta(minutes=10),
+                timedelta(minutes=2),
                 reason="Triggered word filter"
             )
         except discord.Forbidden:
@@ -87,16 +91,15 @@ async def random_messages():
 @bot.command()
 async def deathroll(ctx, target: discord.Member = None, start: int = 1000):
 
-    # If first argument is a number only (no target), shift logic
     if isinstance(target, int):
         start = target
         target = None
 
     max_value = start
 
-    # BOT MODE
+#fix issues where you cant play the bot with random values
     if target is None:
-        player_turn = True  # user starts
+        player_turn = True 
 
         await ctx.send(f"💀 You vs Twoggeris deathroll starting at **{start}**")
 
@@ -116,7 +119,6 @@ async def deathroll(ctx, target: discord.Member = None, start: int = 1000):
             max_value = roll
             player_turn = not player_turn
 
-    # PVP MODE
     else:
         players = [ctx.author, target]
         turn = 0
