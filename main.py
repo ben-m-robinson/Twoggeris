@@ -36,10 +36,12 @@ TRIGGERS = {
     "6/7",
     "six seven",
     "pee",
-    "urine"
+    "urine",
+    "6 7"
 }
 
 TRIGGER_RESPONSE = "Right thats it im getting the hose out"
+
 @bot.event
 async def on_ready():
     print(f"I am here to spread evil, {bot.user.name}")

@@ -73,14 +73,15 @@ quotes = [
     "Your mom regrets not swallowing and so does everyone forced to interact with your mid opinions.",
     "Hardstuck in life, hardstuck in ranked, hardstuck coping — the ultimate loser package.",
     "I hope both political parties fail so midwits like you finally understand you're cattle.",
-    "Touch grass? Why? So I can watch you fail at that too before you an hero?",
+    "Touch grass? Why? So I can watch you fail at that too",
     "Your 'activism' is just mental illness with extra steps and a blue checkmark.",
     "Even the NPCs in game have more personality than your recycled Reddit politics.",
     "Can't reply, too busy laughing at how your entire ideology collapses when facts appear.",
     "The only thing you're carrying is your father's disappointment and a 0.8 K/D.",
     "Go write another manifesto no one will read before you inevitably off yourself over nothing.",
     "Your vote, your opinion, and your life are all equally worthless — change my mind.",
-    "Imagine still breathing in 2026 while being this useless at both games and basic cognition." 
+    "Imagine still breathing in 2026 while being this useless at both games and basic cognition."
+    "If you want my come back you can scrape it off your mums teeth" 
 ]
 
 user_quotes = {
