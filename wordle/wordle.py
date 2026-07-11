@@ -1,4 +1,4 @@
-from words import WORDS
+from .words import WORDS
 import random
 
 class WordleGame:
