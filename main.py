@@ -5,9 +5,9 @@ from dotenv import load_dotenv
 import os
 import random
 import asyncio
-import re
 from quotes import quotes, user_quotes
 from datetime import timedelta
+from Cogs.wordle_commands import WordleCommands
 
 load_dotenv()
 token = os.getenv("DISCORD_TOKEN")
@@ -142,4 +142,11 @@ async def deathroll(ctx, target: discord.Member = None, start: int = 1000):
             max_value = roll
             turn = 1 - turn
 
-bot.run(token, log_handler=handler, log_level=logging.DEBUG)
+
+async def main():
+    async with bot:
+        await bot.add_cog(WordleCommands(bot))
+        await bot.start(token)
+
+
+asyncio.run(main())
