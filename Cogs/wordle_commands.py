@@ -5,9 +5,9 @@ games = {}
 
 def format_game_state(result):
     symbols = {
-        "grey": "⬛",
-        "yellow": "🟨",
-        "green": "🟩"
+        "grey": "⬛ ",
+        "yellow": "🟨 ",
+        "green": "🟩 "
     }
 
     message = "Score:\n"
