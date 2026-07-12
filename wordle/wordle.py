@@ -55,5 +55,4 @@ class WordleGame:
             for letter, state in self.letters.items()
         },
         "guesses_remaining": self.guesses_remaining,
-        "won": self.game_won,
 }

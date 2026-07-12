@@ -3,6 +3,26 @@ from wordle.wordle import WordleGame
 
 games = {}
 
+def format_game_state(result):
+    symbols = {
+        "grey": "⬛",
+        "yellow": "🟨",
+        "green": "🟩"
+    }
+
+    message = "Score:\n"
+    message += "".join(symbols[x] for x in result["score"])
+
+    message += "\n\nLetters used:\n"
+
+    for letter, state in result["letters"].items():
+        if state != "unknown":
+            message += f"{letter.upper()}: {state}\n"
+
+    message += f"\nGuesses remaining: {result['guesses_remaining']}"
+
+    return message
+
 
 class WordleCommands(commands.Cog):
     def __init__(self, bot):
@@ -27,7 +47,7 @@ class WordleCommands(commands.Cog):
             await ctx.send(result)
             return
 
-        await ctx.send(result)
+        await ctx.send(format_game_state(result))
 
         if game.game_won:
             await ctx.send("🎉 Congratulations! You won!")
