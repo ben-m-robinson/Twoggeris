@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 import os
 import random
 import asyncio
+import unicodedata
 from quotes import quotes, user_quotes
 from datetime import timedelta
 from Cogs.wordle_commands import WordleCommands
@@ -39,6 +40,22 @@ TRIGGERS = {
     "urine",
     "6 7"
 }
+CONFUSABLES = str.maketrans({
+    "а": "a",
+    "е": "e",
+    "і": "i",
+    "о": "o",
+    "р": "p",
+    "с": "c",
+    "х": "x",
+    "у": "y",
+})
+
+content = (
+    unicodedata.normalize("NFKC", message.content)
+    .casefold()
+    .translate(CONFUSABLES)
+)
 
 TRIGGER_RESPONSE = "Right thats it im getting the hose out"
 
