@@ -51,11 +51,6 @@ CONFUSABLES = str.maketrans({
     "у": "y",
 })
 
-content = (
-    unicodedata.normalize("NFKC", message.content)
-    .casefold()
-    .translate(CONFUSABLES)
-)
 
 TRIGGER_RESPONSE = "Right thats it im getting the hose out"
 
@@ -79,7 +74,11 @@ async def on_message(message):
 
         await message.channel.send(random.choice(possible_quotes))
 
-    content = message.content.lower()
+    content = (
+    unicodedata.normalize("NFKC", message.content)
+    .casefold()
+    .translate(CONFUSABLES)
+)
 
     if any(trigger in content for trigger in TRIGGERS):
         await message.channel.send(
