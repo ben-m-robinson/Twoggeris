@@ -87,9 +87,9 @@ class WordleCommands(commands.Cog):
         if isinstance(result, str):
             await ctx.send(result)
             return
-
+        
         if isinstance(game, QuordleGame):
-            await ctx.send(format_quordle_state(result))
+            await ctx.send(format_quordle_state(result, game.guesses_remaining))
         else:
             await ctx.send(format_game_state(result))
 
