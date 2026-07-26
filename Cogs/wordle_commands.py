@@ -26,33 +26,35 @@ def format_game_state(result):
     return message
 
 def format_quordle_state(results, guesses_remaining):
+
     symbols = {
-        "grey": "⬛",
-        "yellow": "🟨",
-        "green": "🟩"
+        "grey": "⬛ ",
+        "yellow": "🟨 ",
+        "green": "🟩 "
     }
 
     message = ""
 
+    # Boards
     for i, result in enumerate(results):
         message += f"Word {i + 1}\n"
         message += "".join(symbols[x] for x in result["score"])
         message += "\n\n"
 
-    message += "Letters used:\n"
 
-    letters = {}
+    # Per word letters
+    message += "Letters by word:\n\n"
 
-    for result in results:
+    for i, result in enumerate(results):
+        message += f"Word {i + 1}:\n"
+
         for letter, state in result["letters"].items():
-            if letter not in letters or state > letters[letter]:
-                letters[letter] = state
+            message += f"{letter.upper()}: {symbols[state]}\n"
 
-    for letter, state in letters.items():
-        if state != "unknown":
-            message += f"{letter.upper()}: {state}\n"
+        message += "\n"
 
-    message += f"\nGuesses remaining: {guesses_remaining}"
+
+    message += f"Guesses remaining: {guesses_remaining}"
 
     return message
 
