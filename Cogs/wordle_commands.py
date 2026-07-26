@@ -1,6 +1,6 @@
 from discord.ext import commands
 from wordle.wordle import WordleGame
-from wordle.quordle import QuordleGame
+from wordle.wordle import QuordleGame
 
 games = {}
 
@@ -92,7 +92,7 @@ class WordleCommands(commands.Cog):
                 await ctx.send(f"You lose! The word was **{game.word}**")
 
             del games[ctx.author.id] 
-            
+
     @commands.command()
     async def quordle(self, ctx):
         games[ctx.author.id] = QuordleGame()
