@@ -27,9 +27,9 @@ def format_game_state(result):
 
 def format_quordle_state(results):
     symbols = {
-        "grey": "⬛",
-        "yellow": "🟨",
-        "green": "🟩"
+        "grey": "⬛ ",
+        "yellow": "🟨 ",
+        "green": "🟩 "
     }
 
     message = ""
