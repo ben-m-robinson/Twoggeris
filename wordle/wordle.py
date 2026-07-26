@@ -98,8 +98,10 @@ class QuordleGame:
             return "No guesses remaining"
 
         results = []
+        valid_guess = False
 
         for game in self.games:
+
             if game.game_won:
                 results.append({
                     "score": ["green"] * game.word_length,
@@ -114,18 +116,17 @@ class QuordleGame:
             result = game.make_guess(word)
 
             if isinstance(result, str):
-                return result
+                continue
 
-            results.append(result)
+            valid_guess = True
 
-        self.guesses_remaining -= 1
+            results.append({
+                "score": result["score"],
+                "letters": dict(result["letters"]),
+                "guesses_remaining": self.guesses_remaining
+            })
+
+        if valid_guess:
+            self.guesses_remaining -= 1
 
         return results
-    
-    @property
-    def game_won(self):
-        return all(game.game_won for game in self.games)
-
-    @property
-    def words(self):
-        return [game.word for game in self.games]

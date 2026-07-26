@@ -36,19 +36,26 @@ def format_quordle_state(results, guesses_remaining):
     message = ""
 
     for i, result in enumerate(results):
+
         message += f"Word {i + 1}\n"
-        message += "".join(symbols[x] for x in result["score"])
-        message += "\n\n"
+
+        message += "".join(
+            symbols[x] + " "
+            for x in result["score"]
+        )
+
+        message += "\n"
+
+        for letter, state in result["letters"].items():
+
+            if state != "unknown":
+                message += f"{letter.upper()}: {symbols[state]} ({state})\n"
+
+        message += "\n"
 
 
-    message += "Letters by word:\n\n"
-
-    for i, result in enumerate(results):
-        message += f"Word {i + 1}:\n"
-    for letter, state in result["letters"].items():
-        if state != "unknown":
-            message += f"{letter.upper()}: {symbols[state]}\n"
     message += f"Guesses remaining: {guesses_remaining}"
+
     return message
 
 
