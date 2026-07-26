@@ -1,5 +1,6 @@
 from discord.ext import commands
 from wordle.wordle import WordleGame
+from wordle.quordle import QuordleGame
 
 games = {}
 
@@ -24,6 +25,24 @@ def format_game_state(result):
 
     return message
 
+def format_quordle_state(results):
+    symbols = {
+        "grey": "⬛",
+        "yellow": "🟨",
+        "green": "🟩"
+    }
+
+    message = ""
+
+    for i, result in enumerate(results):
+        message += f"Word {i + 1}\n"
+        message += "".join(symbols[x] for x in result["score"])
+        message += "\n\n"
+
+    message += f"Guesses remaining: {results[0]['guesses_remaining']}"
+
+    return message
+
 
 class WordleCommands(commands.Cog):
     def __init__(self, bot):
@@ -45,7 +64,7 @@ class WordleCommands(commands.Cog):
     @commands.command()
     async def guess(self, ctx, word):
         if ctx.author.id not in games:
-            await ctx.send("Start a game first with !wordle or !wordle6")
+            await ctx.send("Start a game first with !wordle, !wordle6 or !quordle")
             return
 
         game = games[ctx.author.id]
@@ -56,12 +75,26 @@ class WordleCommands(commands.Cog):
             await ctx.send(result)
             return
 
-        await ctx.send(format_game_state(result))
+        if isinstance(game, QuordleGame):
+            await ctx.send(format_quordle_state(result))
+        else:
+            await ctx.send(format_game_state(result))
 
         if game.game_won:
             await ctx.send("🎉 Congratulations! You won!")
             del games[ctx.author.id]
 
         elif game.guesses_remaining == 0:
-            await ctx.send(f"You lose! The word was **{game.word}**")
-            del games[ctx.author.id]
+            if isinstance(game, QuordleGame):
+                words = ", ".join(game.words)
+                await ctx.send(f"You lose! The words were **{words}**")
+            else:
+                await ctx.send(f"You lose! The word was **{game.word}**")
+
+            del games[ctx.author.id] 
+            
+    @commands.command()
+    async def quordle(self, ctx):
+        games[ctx.author.id] = QuordleGame()
+        await ctx.send("New Quordle game started! Solve all 4 words in 9 guesses.")
+

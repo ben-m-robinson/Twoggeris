@@ -12,13 +12,18 @@ class LetterState(IntEnum):
 
 
 class WordleGame:
-    def __init__(self, word_length=5):
+    def __init__(self, word_length=5, word=None):
         self.word_length = word_length
 
-        if word_length == 5:
+        if word:
+            self.word = word
+
+        elif word_length == 5:
             self.word = random.choice(WORDS)
+
         elif word_length == 6:
             self.word = random.choice(SIX_LETTER_WORDS)
+
         else:
             raise ValueError("Unsupported word length")
 
@@ -29,7 +34,6 @@ class WordleGame:
             chr(i): LetterState.UNKNOWN
             for i in range(ord("a"), ord("z") + 1)
         }
-
 
     def make_guess(self, guess):
         guess = guess.lower()
@@ -74,3 +78,54 @@ class WordleGame:
             },
             "guesses_remaining": self.guesses_remaining,
         }
+
+class QuordleGame:
+    def __init__(self):
+        words = random.sample(
+        [word for word in WORDS if len(word) == 5],
+        4
+)
+
+        self.games = [
+            WordleGame(word_length=5, word=word)
+            for word in words
+]
+        self.guesses_remaining = 9
+
+    def make_guess(self, word):
+
+        if self.guesses_remaining <= 0:
+            return "No guesses remaining"
+
+        results = []
+
+        for game in self.games:
+            if game.game_won:
+                results.append({
+                    "score": ["green"] * game.word_length,
+                    "letters": {
+                        letter: state.name.lower()
+                        for letter, state in game.letters.items()
+                    },
+                    "guesses_remaining": self.guesses_remaining
+                })
+                continue
+
+            result = game.make_guess(word)
+
+            if isinstance(result, str):
+                return result
+
+            results.append(result)
+
+        self.guesses_remaining -= 1
+
+        return results
+    
+    @property
+    def game_won(self):
+        return all(game.game_won for game in self.games)
+
+    @property
+    def words(self):
+        return [game.word for game in self.games]
