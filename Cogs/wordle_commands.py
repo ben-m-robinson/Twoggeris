@@ -1,9 +1,9 @@
 from discord.ext import commands
 from wordle.wordle import WordleGame
 from wordle.wordle import QuordleGame
+from wordle.wordle import GameMode
 
 games = {}
-
 
 def format_game_state(result):
     symbols = {
@@ -38,8 +38,6 @@ def format_quordle_state(results, guesses_remaining):
     for i, result in enumerate(results):
 
         message += f"Word {i + 1}\n\n"
-
-        # Score
         message += "Score:\n"
         message += "".join(
             symbols[x] for x in result["score"]
@@ -76,6 +74,15 @@ class WordleCommands(commands.Cog):
         games[ctx.author.id] = WordleGame(word_length=6)
         await ctx.send("New 6-letter Wordle game started! You have 6 guesses.")
 
+    @commands.command()
+    async def hardwordle(self, ctx):
+        games[ctx.author.id] = WordleGame(
+            word_length=5,
+            mode=GameMode.HARD
+        )
+        await ctx.send(
+            "New Hard Wordle game started! "
+        )
 
     @commands.command()
     async def guess(self, ctx, word):

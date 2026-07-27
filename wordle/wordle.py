@@ -1,7 +1,8 @@
 from .words import WORDS
 from .six_letter_words import SIX_LETTER_WORDS
 import random
-from enum import IntEnum
+from enum import Enum, IntEnum
+from collections import Counter
 
 
 class LetterState(IntEnum):
@@ -10,10 +11,15 @@ class LetterState(IntEnum):
     YELLOW = 2
     GREEN = 3
 
+class GameMode(Enum):
+    NORMAL = "normal"
+    HARD = "hard"
+
 
 class WordleGame:
-    def __init__(self, word_length=5, word=None):
+    def __init__(self, word_length=5, word=None, mode=GameMode.NORMAL):
         self.word_length = word_length
+        self.mode = mode
 
         if word:
             self.word = word
@@ -69,15 +75,25 @@ class WordleGame:
             if state > self.letters[letter]:
                 self.letters[letter] = state
 
+        if self.mode == GameMode.NORMAL:
+            score_output = [state.name.lower() for state in score]
+        else:
+            counts = Counter(score)
+            score_output = {
+            "green": counts[LetterState.GREEN],
+            "yellow": counts[LetterState.YELLOW],
+            "grey": counts[LetterState.GREY]
+        }        
+
 
         return {
-            "score": [state.name.lower() for state in score],
+            "score": score_output,
             "letters": {
-                letter: state.name.lower()
-                for letter, state in self.letters.items()
+            letter: state.name.lower()
+            for letter, state in self.letters.items()
             },
             "guesses_remaining": self.guesses_remaining,
-        }
+}
 
 class QuordleGame:
     def __init__(self):
