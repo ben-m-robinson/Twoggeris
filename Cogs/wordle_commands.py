@@ -13,13 +13,18 @@ def format_game_state(result):
     }
 
     message = "Score:\n"
-    message += "".join(symbols[x] for x in result["score"])
 
-    message += "\n\nLetters used:\n"
+    if isinstance(result["score"], list):
+        message += "".join(symbols[x] for x in result["score"])
 
-    for letter, state in result["letters"].items():
-        if state != "unknown":
-            message += f"{letter.upper()}: {state}\n"
+        message += "\n\nLetters used:\n"
+
+        for letter, state in result["letters"].items():
+            if state != "unknown":
+                message += f"{letter.upper()}: {state}\n"
+
+    else:
+        message += result["score"]
 
     message += f"\nGuesses remaining: {result['guesses_remaining']}"
 

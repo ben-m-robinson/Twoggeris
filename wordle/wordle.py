@@ -79,11 +79,11 @@ class WordleGame:
             score_output = [state.name.lower() for state in score]
         else:
             counts = Counter(score)
-            score_output = {
-            "green": counts[LetterState.GREEN],
-            "yellow": counts[LetterState.YELLOW],
-            "grey": counts[LetterState.GREY]
-        }        
+            score_output = [
+                f"{counts[LetterState.GREEN]} green{'s' if counts[LetterState.GREEN] != 1 else ''}",
+                f"{counts[LetterState.YELLOW]} yellow{'s' if counts[LetterState.YELLOW] != 1 else ''}",
+                f"{counts[LetterState.GREY]} gre{'ys' if counts[LetterState.GREY] != 1 else 'y'}",
+            ]      
 
 
         return {
