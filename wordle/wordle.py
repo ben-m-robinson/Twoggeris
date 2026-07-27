@@ -33,7 +33,10 @@ class WordleGame:
         else:
             raise ValueError("Unsupported word length")
 
-        self.guesses_remaining = 6
+        if self.mode == GameMode.NORMAL:
+            self.guesses_remaining = 6
+        else: 
+            self.guesses_remaining = 8
         self.game_won = False
 
         self.letters = {
